@@ -42,7 +42,23 @@
 
 ■zeroでの割り算に注意
 
-■
+■vectorの取り扱いに注意
+	■Consideration_on_Using_vector
+		https://github.com/SJ-magic-study/Consideration_on_Using_vector
+		
+		description
+			vectorで、
+			"ポインタではなく"、
+			オブジェクト自体を取り扱う場合、push_backしたときに次のことが行われています。
+				*	push_backの対象となるオブジェクトをコピーコンストラクタでコピー
+				*	既にpush_back済みのものがあれば、再びコピーコンストラクタでそのコピーを作り、元々コピーしてあったものをデストラクタで始末する。
+			
+		Consideration
+			vectorでオブジェクト自体を持つのは避けるのが良いかもしれない。
+			vectorが廃棄される時に、自動でobjectのdestructorが呼ばれる、と言うメリットはあるものの、
+			vectorの「気遣い」であるコピーコンストラクタ、デストラクタに、反って戸惑わされる恐れがあるからです。
+			それよりも「後始末をしっかりする」ことさえ注意していればよい「ポインタを持つ」方が楽なのでは、と考えています。
+	
 ■
 ■
 ■
