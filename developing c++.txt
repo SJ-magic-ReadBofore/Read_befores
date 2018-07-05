@@ -59,10 +59,40 @@
 			vectorの「気遣い」であるコピーコンストラクタ、デストラクタに、反って戸惑わされる恐れがあるからです。
 			それよりも「後始末をしっかりする」ことさえ注意していればよい「ポインタを持つ」方が楽なのでは、と考えています。
 	
-■
-■
-■
-■
+■Heap領域を汚し過ぎないように.
+
+■CPU占有率が気になった時は
+	FrameRateを落とすと、単純に占有率が半分になる。
+	もしsyphonを使っているappであれば、syphonを送る所のみ、FrameRateを落とす(数回に一回のみsend)としても、かなり効果がある(syphon sendは重い処理なので).
+
+■oFにて、music loadの際、mp3などではdecodeに時間が掛かってしまう(長時間のmusicの場合、特に注意)
+	load時間短縮のため、mp3->wav としておくこと : ffmpeg
+		https://qiita.com/suzutsuki0220/items/43c87488b4684d3d15f6
+		> ffmpeg -i "input.mp3" -vn -ac 2 -ar 44100 -acodec pcm_s16le -f wav "output.wav"
+
+
+■コンストラクタの初期化リストでは、メンバ変数同士の依存をなくす(for safety)
+	description
+		以下は、bug.
+		
+			class Hoge
+			{
+			
+				int square;
+				int num = 0;
+			
+			public:
+				Hoge(int n):
+					num(n),
+					square(num*num)
+				{}
+			
+			};
+		
+		初期化リストに書いた順でなく、メンバ変数の宣言した順番に初期化される。
+		安全のため、メンバ変数同士の依存はなくすのがいいだろう。
+		
+
 ■
 ■
 ■
